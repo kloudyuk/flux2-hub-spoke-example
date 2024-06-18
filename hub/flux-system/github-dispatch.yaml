@@ -1,0 +1,32 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: github
+  namespace: flux-system
+spec:
+  type: githubdispatch
+  address: https://github.com/kloudyuk/flux2-hub-spoke-example
+  secretRef:
+    name: github
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: promotion-dispatch
+  namespace: flux-system
+spec:
+  providerRef:
+    name: github
+  summary: "Trigger promotion"
+  eventMetadata:
+    env: staging
+    cluster: flux-hub
+    region: us-east-1
+  eventSeverity: info
+  eventSources:
+    - kind: HelmRelease
+      name: '*'
+      namespace: staging
+  inclusionList:
+    - ".*.upgrade.*succeeded.*"
