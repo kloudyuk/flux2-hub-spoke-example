@@ -21,7 +21,7 @@ spec:
   summary: "Trigger promotion"
   eventMetadata:
     env: staging
-    cluster: flux-hub
+    cluster: flux-staging
     region: us-east-1
   eventSeverity: info
   eventSources:
