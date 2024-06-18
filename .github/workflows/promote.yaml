@@ -15,7 +15,8 @@ jobs:
     # upgraded the Helm release to a new chart version.
     if: |
       github.event.client_payload.metadata.env == 'staging' &&
-      github.event.client_payload.severity == 'info'
+      github.event.client_payload.severity == 'info' &&
+      (github.event.client_payload.reason == 'InstallSucceeded' || github.event.client_payload.reason == 'UpgradeSucceeded')
     steps:
       - name: Print payload
         run: echo "${{ toJson(github.event.client_payload) }}"
