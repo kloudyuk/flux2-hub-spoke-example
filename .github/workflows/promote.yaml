@@ -40,14 +40,12 @@ jobs:
           yq eval '.spec.chart.spec.version=env(CHART_VERSION)' -i ./clusters/production/apps/${{ github.event.client_payload.involvedObject.name }}-values.yaml
       # Open a Pull Request if an upgrade is needed in production.
       - name: Open promotion PR
-        env:
-          NAME: ${{ github.event.client_payload.involvedObject.name }}
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: promote-${NAME}
+          branch: promote-${{ github.event.client_payload.involvedObject.name }}
           delete-branch: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Update $NAME to v${{ steps.staging.outputs.version }}
-          title: Promote $NAME release to v${{ steps.staging.outputs.version }}
+          commit-message: Update ${{ github.event.client_payload.involvedObject.name }} to v${{ steps.staging.outputs.version }}
+          title: Promote ${{ github.event.client_payload.involvedObject.name }} release to v${{ steps.staging.outputs.version }}
           body: |
-            Promote $NAME release on production to v${{ steps.staging.outputs.version }}
+            Promote ${{ github.event.client_payload.involvedObject.name }} release on production to v${{ steps.staging.outputs.version }}
