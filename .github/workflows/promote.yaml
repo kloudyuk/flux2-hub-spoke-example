@@ -18,7 +18,7 @@ jobs:
       github.event.client_payload.severity == 'info'
     steps:
       - name: print
-        run: echo "${{ github.event.client_payload }}"
+        run: echo "${{ toJson(github.event.client_payload) }}"
       # # Checkout main branch.
       # - uses: actions/checkout@v3
       #   with:
